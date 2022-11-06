@@ -48,11 +48,27 @@ const students = [
     },
     
     add: function (req, res) {
-        res.send("You asked to create the following student " + JSON.stringify(req.body))
-    },
+        // res.send("You asked to create the following student " + JSON.stringify(req.body))
+
+        students.push(req.body)
+
+        res.status(201).json(req.body)
+
+      },
     
     update: function (req, res) {
-        res.send("You asked to update student " + req.params.id + " with the following data " + JSON.stringify(req.body))
+        // res.send("You asked to update student " + req.params.id + " with the following data " + JSON.stringify(req.body))
+
+        let found = students.find((student) => student.id === parseInt(req.params.id))
+
+      //if we found the student return it otherwise return a 404
+      if (found) {
+          found = Object.assign(found, req.body)  // merges what was sent in with what was found
+
+          res.json(found)
+      } else {
+          res.sendStatus(404)
+      }
     },
     
     delete: function (req, res) {
